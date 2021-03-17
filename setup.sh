@@ -46,7 +46,7 @@ up(){
 	./transfer $1 | tee download.txt
 }
 tg_sendText "Building"
-make SystemUI -j6
+make SystemUI -j4
 mka bacon
 up out/target/product/a10/*.zip
 tg_sendFile "download.txt"
