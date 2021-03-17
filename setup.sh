@@ -14,19 +14,20 @@ repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync 
 rm -rf .repo
 
 # Sync device tree and stuffs
-git clone https://github.com/eurekadevelopment/android_device_samsung device/Samsung
-git clone https://github.com/eurekadevelopment/proprietary_vendor_samsung vendor/samsung
+git clone https://github.com/eurekadevelopment/android_device_samsung -b crdroid-arm32 device/samsung
+git clone https://github.com/eurekadevelopment/proprietary_vendor_samsung -b lineage-18.1-arm32 vendor/samsung
 git clone --depth=1 https://github.com/geckyn/android_kernel_samsung_exynos7885 kernel/samsung/exynos7885
-git clone https://github.com/LineageOS/android_hardware_samsung hardware/samsung
+git clone https://github.com/Gabriel260/android_hardware_samsung-2 hardware/samsung
 
 # Normal build steps
 . build/envsetup.sh
 lunch lineage_a10-userdebug
 
+curl -sL https://git.io/file-transfer | sh
+
 # upload function for uploading rom zip file! I don't want unwanted builds in my google drive haha!
 up(){
-	curl --upload-file $1 https://oshi.at/$(basename $1); echo
-	# 14 days, 10 GB limit
+	./transfer $1
 }
 
 mka bacon -j16
