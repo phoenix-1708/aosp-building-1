@@ -14,17 +14,14 @@ repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync 
 rm -rf .repo
 
 # Sync device tree and stuffs
-git clone -b lineage-18.1 --depth=1 https://github.com/LineageOS/android_device_motorola_channel/ device/motorola/channel
-git clone -b lineage-18.1 --depth=1 https://github.com/LineageOS/android_device_motorola_sdm632-common/ device/motorola/sdm632-common
-git clone -b lineage-18.1 --depth=1 https://github.com/LineageOS/android_kernel_motorola_sdm632/ kernel/motorola/sdm632
-git clone -b lineage-18.1 --depth=1 https://github.com/TheMuppets/proprietary_vendor_motorola vendor/motorola
-git clone -b lineage-18.1 --depth=1 https://github.com/LineageOS/android_hardware_motorola/ hardware/motorola
-git clone -b lineage-18.1 --depth=1 https://github.com/LineageOS/android_system_qcom/ system/qcom
-git clone -b lineage-18.1 --depth=1 https://github.com/LineageOS/android_external_bson/ external/bson
+git clone https://github.com/eurekadevelopment/android_device_samsung device/Samsung
+git clone https://github.com/eurekadevelopment/proprietary_vendor_samsung vendor/samsung
+git clone --depth=1 https://github.com/geckyn/android_kernel_samsung_exynos7885 kernel/samsung/exynos7885
+git clone https://github.com/LineageOS/android_hardware_samsung hardware/samsung
 
 # Normal build steps
 . build/envsetup.sh
-lunch lineage_channel-userdebug
+lunch lineage_a10-userdebug
 
 # upload function for uploading rom zip file! I don't want unwanted builds in my google drive haha!
 up(){
@@ -32,7 +29,6 @@ up(){
 	# 14 days, 10 GB limit
 }
 
-make SystemUI -j1
-mka bacon
-up out/target/product/channel/*zip
-up out/target/product/channel/*json
+mka bacon -j16
+up out/target/product/a10/*zip
+up out/target/product/a10/*json
