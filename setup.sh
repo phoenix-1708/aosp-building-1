@@ -1,5 +1,19 @@
 #!/bin/bash
 
+export CHAT_ID=-1001165568594
+export BOT_TOKEN=1769103266:AAHFb2yG3S3I5vspEQFtuTP-SvM1E0bjOfc
+function tg_sendText() {
+curl -s "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+-d "parse_mode=html" \
+-d text="${1}" \
+-d chat_id=$CHAT_ID \
+-d "disable_web_page_preview=true"
+}
+
+function tg_sendFile() {
+curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot$BOT_TOKEN/sendDocument
+}
+
 MANIFEST=git://github.com/crdroidandroid/android.git
 BRANCH=11.0
 
@@ -9,6 +23,7 @@ cd /tmp/rom
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
 repo init --no-repo-verify --depth=1 -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
 
+tg_sendText "Downloading sources"
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j30 || repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8
 rm -rf .repo
@@ -21,6 +36,7 @@ git clone https://github.com/Gabriel260/android_hardware_samsung-2 hardware/sams
 
 # Normal build steps
 . build/envsetup.sh
+export USE_CCACHE=0
 lunch lineage_a10-userdebug
 
 curl -sL https://git.io/file-transfer | sh
@@ -29,7 +45,7 @@ curl -sL https://git.io/file-transfer | sh
 up(){
 	./transfer $1
 }
-
-mka bacon -j16
+tg_sendText "Building"
+mka bacon -j10
 up out/target/product/a10/*zip
 up out/target/product/a10/*json
