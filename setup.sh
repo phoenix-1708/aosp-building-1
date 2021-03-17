@@ -18,11 +18,6 @@ MANIFEST=git://github.com/crdroidandroid/android.git
 BRANCH=11.0
 
 mkdir -p /tmp/rom
-mkdir -p /tmp/swap
-cd /tmp/swap
-sudo dd if=/dev/zero of=swapfile bs=1024 count=8048576
-sudo mkswap swapfile
-sudo swapon swapfile
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
@@ -51,7 +46,8 @@ up(){
 	./transfer $1 | tee download.txt
 }
 tg_sendText "Building"
-mka bacon -j16
+make SystemUI -j1
+mka bacon
 up out/target/product/a10/*.zip
 up out/target/product/a10/*.json
 
