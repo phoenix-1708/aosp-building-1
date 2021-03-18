@@ -39,16 +39,16 @@ git clone https://github.com/Gabriel260/android_hardware_samsung-2 hardware/sams
 export USE_CCACHE=0
 lunch lineage_a10-userdebug
 
-curl -sL https://git.io/file-transfer | sh
-
 # upload function for uploading rom zip file! I don't want unwanted builds in my google drive haha!
 up(){
-	./transfer $1 | tee download.txt
+	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 tg_sendText "Building"
-make SystemUI -j4
-mka bacon
+mka api-stubs-docs
+mka system-api-stubs-docs
+mka test-api-stubs-docs
+mka bacon -j16
 up out/target/product/a10/*.zip
-tg_sendFile "download.txt"
+tg_sendText "download.txt"
 up out/target/product/a10/*.json
-tg_sendFile "download.txt"
+tg_sendText "download.txt"
