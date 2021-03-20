@@ -44,9 +44,9 @@ up(){
 	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 tg_sendText "Building"
-mka api-stubs-docs -j16
-mka system-api-stubs-docs -j16
-mka test-api-stubs-docs -j16
+mka api-stubs-docs
+mka system-api-stubs-docs
+mka test-api-stubs-docs
 mka bacon -j16
 up out/target/product/a10/*.zip
 tg_sendText "download.txt"
