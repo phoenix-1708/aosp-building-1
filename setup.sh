@@ -53,4 +53,3 @@ tg_sendText "download.txt"
 up out/target/product/a10/*.json
 tg_sendText "download.txt"
 
-echo "a"
