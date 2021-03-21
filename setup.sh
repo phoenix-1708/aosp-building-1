@@ -52,5 +52,3 @@ up out/target/product/a10/*.zip
 tg_sendFile "download.txt"
 up out/target/product/a10/*.json
 tg_sendFile "download.txt"
-
-echo a
