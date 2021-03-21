@@ -49,6 +49,8 @@ mka system-api-stubs-docs -j16
 mka test-api-stubs-docs -j16
 mka bacon -j16
 up out/target/product/a10/*.zip
-tg_sendText "download.txt"
+tg_sendFile "download.txt"
 up out/target/product/a10/*.json
-tg_sendText "download.txt"
+tg_sendFile "download.txt"
+
+echo a
