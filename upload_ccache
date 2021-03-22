@@ -1,0 +1,31 @@
+#!/bin/bash
+
+function tg_sendText() {
+curl -s "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+-d "parse_mode=html" \
+-d text="${1}" \
+-d chat_id=$CHAT_ID \
+-d "disable_web_page_preview=true"
+}
+
+function tg_sendFile() {
+curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot$BOT_TOKEN/sendDocument
+}
+
+tg_sendText "ccache"
+cd /tmp
+
+com () 
+{ 
+    tar --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1
+}
+
+up(){
+	curl --upload-file $1 https://transfer.sh/ | tee download.txt
+}
+
+time com ccache 5 # Compression level 1, its enough
+zip ccache.zip cr_ccache.tar.gz
+up ccache.zip
+tg_sendFile "download.txt"
+
