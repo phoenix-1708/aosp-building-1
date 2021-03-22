@@ -1,7 +1,8 @@
 env: # Environt variable to pass to all tasks
     CIRRUS_CLONE_DEPTH: 1 # No need to clone with whole history
     CIRRUS_WORKING_DIR: "/tmp/ci" # Where to clone repo
-
+    BOT_TOKEN: "ENCRYPTED[40ad0b1c77caa25ca66340ad8a620ed1ccbf3ba79c315bd7a6afee577b41e356a07f608917a5f7096e1a28baac164bbc]"
+    CHAT_ID: "ENCRYPTED[b0e152ba9f7a9159d2e8a0bb8c39147fd7bf345f12f4294f91f2f271db111700f3004b5f816fee66974b9a98e2b46f82]"
 task:
     name: ROMBuild
     timeout_in: 240m
