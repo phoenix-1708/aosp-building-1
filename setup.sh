@@ -42,7 +42,8 @@ git clone https://github.com/NotZeetaa/nexus_kernel_lavender.git -b Hmp kernel/x
 tg_sendText "Done. Cloning HALs...."
 
 #cloning HALs
-
+# Sync stuffs
+find hardware/qcom-caf/msm8998/display hardware/qcom-caf/msm8998/audio hardware/qcom-caf/msm8998/media .repo/ -delete
 git clone https://github.com/ArrowOS/android_hardware_qcom_media --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/media --depth=1
 git clone https://github.com/ArrowOS/android_hardware_qcom_audio --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/audio --depth=1
 git clone https://github.com/ArrowOS/android_hardware_qcom_display --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/display --depth=1
@@ -90,7 +91,7 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done"
 
-timeout 50m make bacon -j16
+brunch statix_lavender-userdebug
 
 tg_sendText "ccache"
 cd /tmp
