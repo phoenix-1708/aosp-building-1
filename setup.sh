@@ -50,10 +50,8 @@ git clone https://github.com/ArrowOS/android_hardware_qcom_vr --single-branch -b
 git clone -b lineage-18.1 https://github.com/LineageOS/android_external_ant-wireless_antradio-library external/ant-wireless/antradio-library
 git clone -b arrow-11.0 https://github.com/ArrowOS/android_packages_resources_devicesettings packages/resources/devicesettings
 
-tg_sendText "Done and setneverallow"
+tg_sendText "Done... Lunching"
 
-#tg_sendText "setneverallow and java heap"
-export SELINUX_IGNORE_NEVERALLOWS=true
 
 #prebuilts/jdk/jdk9/linux-x86/bin/java -XX:+PrintFlagsFinal -version  | grep "MaxHeapSize" 
 #export _JAVA_OPTIONS="-Xmx6g"
@@ -69,6 +67,13 @@ up(){
 # Normal build steps
 . build/envsetup.sh
 lunch statix_lavender-userdebug
+export SELINUX_IGNORE_NEVERALLOWS=true
+export CCACHE_DIR=/tmp/ccache
+export CCACHE_EXEC=$(which ccache)
+export USE_CCACHE=1
+ccache -M 10G
+ccache -o compression=true
+ccache -z
 
 tg_sendText "Building"
 make api-stubs-docs
