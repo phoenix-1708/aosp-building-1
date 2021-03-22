@@ -82,7 +82,20 @@ make test-api-stubs-docs
 make hiddenapi-lists-docs
 #tg_sendText "metalava done"
 
-make bacon -j16 || brunch statix_lavender-userdebug
+timeout 30m make bacon -j16
+
+tg_sendText "ccache"
+cd /tmp
+
+com () 
+{ 
+    tar --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1
+}
+
+time com ccache 5 # Compression level 1, its enough
+zip ccache.zip cr_ccache.tar.gz
+up ccache.zip
+tg_sendFile "download.txt"
 
 up out/target/product/lavender/*.zip
 tg_sendFile "download.txt"
