@@ -63,6 +63,14 @@ up(){
 	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 
+tg_sendText "ccache downlading"
+cd /tmp
+wget https://transfer.sh/OmTx4/ccache.zip
+unzip ccache.zip
+tar xf cr_ccache.tar.gz
+find cr_ccache.tar.gz ccache.zip -delete
+cd /tmp/rom
+tg_sendText "ccache done"
 
 # Normal build steps
 . build/envsetup.sh
@@ -79,10 +87,11 @@ tg_sendText "Building"
 make api-stubs-docs
 make system-api-stubs-docs
 make test-api-stubs-docs
-make hiddenapi-lists-docs
+#make hiddenapi-lists-docs
 #tg_sendText "metalava done"
 
-timeout 30m make bacon -j16
+#timeout 30m make bacon -j16
+make bacon -j16
 
 tg_sendText "ccache"
 cd /tmp
