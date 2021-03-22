@@ -8,6 +8,6 @@ task:
     container:
       image: apon77/aosp:latest
       cpu: 16
-      memory: 24G
+      memory: 30G
     build_script:
       - ./setup.sh
