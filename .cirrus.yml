@@ -11,6 +11,6 @@ task:
       cpu: 16
       memory: 30G
     build_script:
-      - timeout 1h ./setup.sh
-    upload_ccache_script:
-      - ./upload_ccache
+      - ./setup.sh
+    #upload_ccache_script:
+   #   - ./upload_ccache
