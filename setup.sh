@@ -85,13 +85,14 @@ ccache -o compression=true
 ccache -z
 
 tg_sendText "Building"
-#make api-stubs-docs
-#make system-api-stubs-docs
-#make test-api-stubs-docs
-#make hiddenapi-lists-docs
-#tg_sendText "metalava done"
+mka SystemUI
+mka api-stubs-docs
+mka system-api-stubs-docs
+mka test-api-stubs-docs
+mka hiddenapi-lists-docs
+tg_sendText "metalava done"
 
-timeout 60m m kronic
+timeout 60m sh -c "m kronic"
 
 tg_sendText "ccache"
 cd /tmp
