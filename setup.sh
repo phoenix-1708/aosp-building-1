@@ -94,9 +94,6 @@ tg_sendText "Building"
 
 m kronic
 
-tg_sendText "ccache"
-cd /tmp
-
 com () 
 { 
     tar --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1
@@ -109,6 +106,9 @@ up out/target/product/lavender/*.json
 tg_sendFile "download.txt"
 tg_sendText "Build Completed"
 
+
+tg_sendText "ccache"
+cd /tmp
 time com ccache 1 # Compression level 1, its enough
 #zip ccache.zip cr_ccache.tar.gz
 up cr_ccache.tar.gz
