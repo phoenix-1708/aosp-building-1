@@ -102,11 +102,6 @@ com ()
     tar --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1
 }
 
-time com ccache 5 # Compression level 1, its enough
-#zip ccache.zip cr_ccache.tar.gz
-up cr_ccache.tar.gz
-tg_sendFile "download.txt"
-
 up out/target/product/lavender/*.zip
 tg_sendFile "download.txt"
 #tg_sendFile "out/target/product/lavender/*.zip"
