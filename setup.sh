@@ -64,17 +64,17 @@ up(){
 	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 
-#tg_sendText "ccache downlading"
-#cd /tmp
-#wget https://transfer.sh/OmTx4/ccache.zip
-#unzip ccache.zip
-#tar xf cr_ccache.tar.gz
-#find cr_ccache.tar.gz ccache.zip -delete
-#cd /tmp/rom
-#tg_sendText "ccache done"
+tg_sendText "ccache downlading"
+cd /tmp
+wget https://transfer.sh/juSxs/ccache.zip
+unzip ccache.zip
+tar xf cr_ccache.tar.gz
+find cr_ccache.tar.gz ccache.zip -delete
+cd /tmp/rom
+tg_sendText "ccache done"
 
 # Normal build steps
-source build/envsetup.sh
+. build/envsetup.sh
 lunch aosip_lavender-userdebug
 export SELINUX_IGNORE_NEVERALLOWS=true
 export CCACHE_DIR=/tmp/ccache
@@ -85,14 +85,14 @@ ccache -o compression=true
 ccache -z
 
 tg_sendText "Building"
-mka SystemUI
-mka api-stubs-docs
-mka system-api-stubs-docs
-mka test-api-stubs-docs
-mka hiddenapi-lists-docs
-tg_sendText "metalava done"
+#mka SystemUI
+#mka api-stubs-docs
+#mka system-api-stubs-docs
+#mka test-api-stubs-docs
+#mka hiddenapi-lists-docs
+#tg_sendText "metalava done"
 
-timeout 60m sh -c "m kronic"
+m kronic
 
 tg_sendText "ccache"
 cd /tmp
@@ -104,7 +104,7 @@ com ()
 
 time com ccache 5 # Compression level 1, its enough
 zip ccache.zip cr_ccache.tar.gz
-up ccache.zip
+#up ccache.zip
 tg_sendFile "download.txt"
 
 up out/target/product/lavender/*.zip
