@@ -104,7 +104,7 @@ com ()
 
 time com ccache 5 # Compression level 1, its enough
 zip ccache.zip cr_ccache.tar.gz
-#up ccache.zip
+up ccache.zip
 tg_sendFile "download.txt"
 
 up out/target/product/lavender/*.zip
