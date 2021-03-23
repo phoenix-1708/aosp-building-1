@@ -103,8 +103,8 @@ com ()
 }
 
 time com ccache 5 # Compression level 1, its enough
-zip ccache.zip cr_ccache.tar.gz
-up ccache.zip
+#zip ccache.zip cr_ccache.tar.gz
+up cr_ccache.tar.gz
 tg_sendFile "download.txt"
 
 up out/target/product/lavender/*.zip
@@ -113,3 +113,8 @@ tg_sendFile "download.txt"
 up out/target/product/lavender/*.json
 tg_sendFile "download.txt"
 tg_sendText "Build Completed"
+
+time com ccache 1 # Compression level 1, its enough
+#zip ccache.zip cr_ccache.tar.gz
+up cr_ccache.tar.gz
+tg_sendFile "download.txt"
