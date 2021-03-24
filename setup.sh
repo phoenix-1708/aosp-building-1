@@ -87,9 +87,9 @@ tg_sendText "Building"
 #mka system-api-stubs-docs
 #mka test-api-stubs-docs
 #mka hiddenapi-lists-docs
-#tg_sendText "metalava done"
+#tg_sendText "metalava do"
 
-timeout 60m brunch statix_lavender-userdebug
+brunch statix_lavender-userdebug
 
 #compress to tar code
 com () 
