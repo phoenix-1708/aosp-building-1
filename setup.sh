@@ -14,7 +14,7 @@ curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.te
 }
 
 
-sudo apt-get install bc
+#sudo apt-get install bc
 MANIFEST=git://github.com/StatiXOS/android_manifest.git
 BRANCH=11
 
@@ -71,7 +71,7 @@ tg_sendText "Done... Lunching"
 #tg_sendText "ccache done"
 
 # Normal build steps
-export SELINUX_IGNORE_NEVERALLOWS=true
+#export SELINUX_IGNORE_NEVERALLOWS=true
 . build/envsetup.sh
 lunch statix_lavender-userdebug
 export USE_CCACHE=1
