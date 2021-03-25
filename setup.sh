@@ -22,7 +22,7 @@ mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
+repo init --no-repo-verify --depth=1 -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
@@ -44,7 +44,7 @@ tg_sendText "Done. Cloning HALs...."
 
 #cloning HALs
 # Sync stuffs
-find hardware/qcom-caf/msm8998/display hardware/qcom-caf/msm8998/audio hardware/qcom-caf/msm8998/media .repo/ -delete
+find hardware/qcom-caf/msm8998/display hardware/qcom-caf/msm8998/audio hardware/qcom-caf/msm8998/media hardware/qcom/sm8150 hardware/qcom/sdm845 .repo/ -delete
 git clone https://github.com/ArrowOS/android_hardware_qcom_media --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/media --depth=1
 git clone https://github.com/ArrowOS/android_hardware_qcom_audio --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/audio --depth=1
 git clone https://github.com/ArrowOS/android_hardware_qcom_display --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/display --depth=1
