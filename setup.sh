@@ -15,6 +15,7 @@ curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.te
 
 
 sudo apt-get install bc
+sudo apt-get install wget
 MANIFEST=git://github.com/StatiXOS/android_manifest.git
 BRANCH=11
 
