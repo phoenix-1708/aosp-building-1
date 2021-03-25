@@ -13,7 +13,47 @@ function tg_sendFile() {
 curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot$BOT_TOKEN/sendDocument
 }
 
+#compress to tar code
+com () 
+{ 
+    tar --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1
+}
 
+# upload function for uploading rom zip file! I don't want unwanted builds in my google drive haha!
+up(){
+	curl --upload-file $1 https://transfer.sh/ | tee download.txt
+}
+
+abc_cache(){
+com () 
+{ 
+    tar --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1
+}
+# upload function for uploading rom zip file! I don't want unwanted builds in my google drive haha!
+up(){
+	curl --upload-file $1 https://transfer.sh/ | tee download.txt
+}
+function tg_sendFile() {
+curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot$BOT_TOKEN/sendDocument
+}
+function tg_sendText() {
+curl -s "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+-d "parse_mode=html" \
+-d text="${1}" \
+-d chat_id=$CHAT_ID \
+-d "disable_web_page_preview=true"
+}
+tg_sendText "ccache"
+cd /tmp
+time com ccache 3 # Compression level 1, its enough
+#zip ccache.zip cr_ccache.tar.gz
+up cr_ccache.tar.gz
+tg_sendFile "download.txt"
+cd /tmp/rom
+}
+
+
+sudo apt install at
 sudo apt-get install bc
 sudo apt-get install wget
 MANIFEST=git://github.com/StatiXOS/android_manifest.git
@@ -90,18 +130,12 @@ tg_sendText "Building"
 #mka hiddenapi-lists-docs
 #tg_sendText "metalava done"
 
+sudo atd
+abc_cache | at now + 1 hour
+atq
 brunch statix_lavender-userdebug
 
-#compress to tar code
-com () 
-{ 
-    tar --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1
-}
 
-# upload function for uploading rom zip file! I don't want unwanted builds in my google drive haha!
-up(){
-	curl --upload-file $1 https://transfer.sh/ | tee download.txt
-}
 
 tg_sendText "Build zip"
 cd /tmp/rom
@@ -112,10 +146,3 @@ tg_sendText "json"
 up out/target/product/lavender/*.json
 tg_sendFile "download.txt"
 tg_sendText "Build Completed"
-
-tg_sendText "ccache"
-cd /tmp
-time com ccache 3 # Compression level 1, its enough
-#zip ccache.zip cr_ccache.tar.gz
-up cr_ccache.tar.gz
-tg_sendFile "download.txt"
