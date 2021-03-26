@@ -129,9 +129,12 @@ tg_sendText "Building"
 #mka test-api-stubs-docs
 #mka hiddenapi-lists-docs
 #tg_sendText "metalava done"
-
+atq
 sudo atd
-abc_cache | at now + 1 hour
+at now + 1 hour <<END
+abc_cache
+END
+
 atq
 brunch statix_lavender-userdebug
 
