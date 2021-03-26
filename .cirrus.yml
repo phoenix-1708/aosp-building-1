@@ -13,4 +13,4 @@ task:
     build_script:
       - timeout 80m ./setup.sh
  #   upload_ccache_script:
-      - ./upload_ccache
+      - ./upload_ccache.sh
