@@ -12,7 +12,7 @@ function tg_sendFile() {
 curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot$BOT_TOKEN/sendDocument
 }
 
-tg_sendText "ccache"
+tg_sendText "ccache upload"
 cd /tmp
 
 com () 
@@ -24,8 +24,11 @@ up(){
 	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 
-time com ccache 5 # Compression level 1, its enough
-zip ccache.zip cr_ccache.tar.gz
-up ccache.zip
+
+cd /tmp
+time com ccache 3 # Compression level 1, its enough
+#zip ccache.zip cr_ccache.tar.gz
+up cr_ccache.tar.gz
 tg_sendFile "download.txt"
+cd /tmp/rom
 
