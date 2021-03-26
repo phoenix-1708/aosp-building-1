@@ -83,7 +83,7 @@ cd /tmp/rom
 tg_sendText "ccache done"
 
 # Normal build steps
-#export SELINUX_IGNORE_NEVERALLOWS=true
+export SELINUX_IGNORE_NEVERALLOWS=true
 . build/envsetup.sh
 lunch statix_lavender-userdebug
 export CCACHE_DIR=/tmp/ccache
@@ -115,10 +115,10 @@ up out/target/product/lavender/*.json
 tg_sendFile "download.txt"
 tg_sendText "Build Completed"
 
-tg_sendText "ccache upload"
-cd /tmp
-time com ccache 3 # Compression level 1, its enough
+#tg_sendText "ccache upload"
+#cd /tmp
+#time com ccache 3 # Compression level 1, its enough
 #zip ccache.zip cr_ccache.tar.gz
-up cr_ccache.tar.gz
-tg_sendFile "download.txt"
-cd /tmp/rom
+#up cr_ccache.tar.gz
+#tg_sendFile "download.txt"
+#cd /tmp/rom
