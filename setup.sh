@@ -24,7 +24,6 @@ up(){
 	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 
-sudo apt install at
 sudo apt-get install bc
 sudo apt-get install wget
 MANIFEST=git://github.com/StatiXOS/android_manifest.git
@@ -100,7 +99,7 @@ tg_sendText "Building"
 #mka test-api-stubs-docs
 #mka hiddenapi-lists-docs
 #tg_sendText "metalava done"
-
+sleep 80m && tg_sendText "ccache upload" && cd /tmp && time com ccache 3 && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
 brunch statix_lavender-userdebug
 
 
@@ -115,10 +114,10 @@ up out/target/product/lavender/*.json
 tg_sendFile "download.txt"
 tg_sendText "Build Completed"
 
-#tg_sendText "ccache upload"
-#cd /tmp
-#time com ccache 3 # Compression level 1, its enough
+tg_sendText "ccache upload"
+cd /tmp
+time com ccache 3 # Compression level 1, its enough
 #zip ccache.zip cr_ccache.tar.gz
-#up cr_ccache.tar.gz
-#tg_sendFile "download.txt"
-#cd /tmp/rom
+up cr_ccache.tar.gz
+tg_sendFile "download.txt"
+cd /tmp/rom
