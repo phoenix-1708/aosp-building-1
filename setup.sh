@@ -99,7 +99,7 @@ tg_sendText "Building"
 #mka test-api-stubs-docs
 #mka hiddenapi-lists-docs
 #tg_sendText "metalava done"
-sleep 60m && tg_sendText "ccache upload" && cd /tmp && cp ccache ccache_1 && time com ccache_1 3 && up cr_ccache_1.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
+sleep 60m && tg_sendText "ccache upload" && cd /tmp && cp -r ccache/. ccache_1 && time com ccache_1 3 && up cr_ccache_1.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
 brunch statix_lavender-userdebug
 
 
