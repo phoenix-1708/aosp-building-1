@@ -26,8 +26,8 @@ up(){
 
 #sudo apt-get install bc
 sudo apt-get install wget
-MANIFEST=git://github.com/StatiXOS/android_manifest.git
-BRANCH=11
+MANIFEST=git://github.com/AospExtended/manifest.git
+BRANCH=11.x
 
 mkdir -p /tmp/rom
 cd /tmp/rom
@@ -42,26 +42,12 @@ tg_sendText "Downloading sources"
 repo sync --force-sync --no-clone-bundle --current-branch --no-tags -j30 || repo sync --force-sync --no-clone-bundle --current-branch --no-tags -j8
 rm -rf .repo
 
-tg_sendText "Cloning repo done"
-
 # Sync device tree and stuffs
-tg_sendText "Cloning Device stuff"
+tg_sendText "Repo done... Cloning Device stuff"
 
-git clone https://github.com/coolhotham/device_lav.git --single-branch -b arrow-11.0 device/xiaomi/lavender --depth=1
-git clone https://github.com/coolhotham/vendor_lav.git --single-branch -b arrow-11.0 vendor/xiaomi/lavender --depth=1
+git clone https://gitlab.com/makaramhk/device_xiaomeme_lavender.git --single-branch -b aex device/xiaomi/lavender --depth=1
+git clone https://gitlab.com/randomscape/vendor_xiaomeme_lavender.git --single-branch -b arrow-11.0 vendor/xiaomi/lavender --depth=1
 git clone https://github.com/NotZeetaa/nexus_kernel_lavender.git -b Hmp kernel/xiaomi/lavender --depth=1
-
-tg_sendText "Done. Cloning HALs...."
-
-#cloning HALs
-# Sync stuffs
-find hardware/qcom-caf/msm8998/display hardware/qcom-caf/msm8998/audio hardware/qcom-caf/msm8998/media hardware/qcom/sm8150 hardware/qcom/sdm845 .repo/ -delete
-git clone https://github.com/ArrowOS/android_hardware_qcom_media --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/media --depth=1
-git clone https://github.com/ArrowOS/android_hardware_qcom_audio --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/audio --depth=1
-git clone -b 11 https://github.com/zaidkhan0997/hardware_qcom-caf_display_msm8998.git hardware/qcom-caf/msm8998/display --depth=1
-git clone https://github.com/ArrowOS/android_hardware_qcom_vr --single-branch -b arrow-11.0 hardware/qcom-caf/vr --depth=1
-git clone -b lineage-18.1 https://github.com/LineageOS/android_external_ant-wireless_antradio-library external/ant-wireless/antradio-library
-git clone -b arrow-11.0 https://github.com/ArrowOS/android_packages_resources_devicesettings packages/resources/devicesettings
 
 tg_sendText "Done... Lunching"
 
@@ -72,19 +58,18 @@ tg_sendText "Done... Lunching"
 
 
 
-tg_sendText "ccache downlading"
-cd /tmp
-wget https://transfer.sh/mFMHV/cr_ccache.tar.gz
-#unzip ccache.zip
-tar xf cr_ccache.tar.gz
-find cr_ccache.tar.gz -delete
-cd /tmp/rom
-tg_sendText "ccache done"
+#tg_sendText "ccache downlading"
+#cd /tmp
+#wget https://transfer.sh/mFMHV/cr_ccache.tar.gz
+#tar xf cr_ccache.tar.gz
+#find cr_ccache.tar.gz -delete
+#cd /tmp/rom
+#tg_sendText "ccache done"
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
-. build/envsetup.sh
-lunch statix_lavender-userdebug
+source build/envsetup.sh
+lunch aosp_lavender-userdebug
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
@@ -98,10 +83,9 @@ mka api-stubs-docs
 mka system-api-stubs-docs
 mka test-api-stubs-docs
 mka hiddenapi-lists-docs
-#tg_sendText "metalava done"
-#sleep 60m && tg_sendText "ccache upload" && cd /tmp && cp -r ccache/. ccache_1 && time com ccache_1 3 && up cr_ccache_1.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
-brunch statix_lavender-userdebug
+tg_sendText "metalava done"
 
+m aex -j$(nproc --all) || m aex -j16 || m aex -j12
 
 
 tg_sendText "Build zip"
@@ -112,7 +96,6 @@ tg_sendFile "download.txt"
 tg_sendText "json"
 up out/target/product/lavender/*.json
 tg_sendFile "download.txt"
-tg_sendText "Build Completed"
 
 tg_sendText "ccache upload"
 cd /tmp
