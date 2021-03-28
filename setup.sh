@@ -24,7 +24,7 @@ up(){
 	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 
-#sudo apt-get install bc
+sudo apt-get install bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
 sudo apt-get install wget
 MANIFEST=git://github.com/TenX-OS/manifest_TenX
 BRANCH=eleven
@@ -58,16 +58,16 @@ tg_sendText "Done... Lunching"
 
 
 
-#tg_sendText "ccache downlading"
-#cd /tmp
-#wget https://transfer.sh/gBI8p/cr_ccache.tar.gz
-#tar xf cr_ccache.tar.gz
-#find cr_ccache.tar.gz -delete
-#cd /tmp/rom
-#tg_sendText "ccache done"
+tg_sendText "ccache downlading"
+cd /tmp
+wget https://transfer.sh/KE7UK/cr_ccache.tar.gz
+tar xf cr_ccache.tar.gz
+find cr_ccache.tar.gz -delete
+cd /tmp/rom
+tg_sendText "ccache done"
 
 # Normal build steps
-#export SELINUX_IGNORE_NEVERALLOWS=true
+export SELINUX_IGNORE_NEVERALLOWS=true
 . build/envsetup.sh
 lunch aosp_lavender-userdebug
 export CCACHE_DIR=/tmp/ccache
@@ -85,7 +85,7 @@ make test-api-stubs-docs
 make hiddenapi-lists-docs
 tg_sendText "metalava done.. Building"
 
-make bacon -j$(nproc --all) || make bacon -j16 || make bacon -j12
+make bacon -j$(nproc --all) || make bacon -j16
 
 
 tg_sendText "Build zip"
