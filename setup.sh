@@ -16,7 +16,7 @@ curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.te
 #compress to tar code
 com () 
 { 
-    tar --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1
+    tar --warning=no-file-changed --use-compress-program="pigz -k -$2 " -cf cr_$1.tar.gz $1 || ( export ret=$?; [[ $ret -eq 1 ]] || exit "$ret" )
 }
 
 # upload function for uploading rom zip file! I don't want unwanted builds in my google drive haha!
@@ -88,7 +88,7 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 
-sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 3 && tg_sendText "ccache upload" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 || zip -r ccache.zip ccache && tg_sendText "ccache upload" && up cr_ccache.tar.gz || up ccache.zip && tg_sendFile "download.txt" && cd /tmp/rom &
 brunch lavender || make bacon -j$(nproc --all)
 
 
