@@ -76,18 +76,19 @@ lunch aosp_lavender-userdebug
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 10G
+ccache -M 2G
 ccache -o compression=true
 ccache -z
 
-#tg_sendText "Building"
+tg_sendText "Building"
 #make SystemUI
 #make api-stubs-docs
 #make system-api-stubs-docs
 #make test-api-stubs-docs
 #make hiddenapi-lists-docs
-tg_sendText "metalava done.. Building"
+#tg_sendText "metalava done.. Building"
 
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 3 && tg_sendText "ccache upload" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
 brunch lavender || make bacon -j$(nproc --all)
 
 
