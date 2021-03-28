@@ -88,7 +88,7 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 
-sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 || zip -r ccache.zip ccache && tg_sendText "ccache upload" && up cr_ccache.tar.gz || up ccache.zip && tg_sendFile "download.txt" && cd /tmp/rom &
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && (time com ccache 1 || zip -r ccache.zip ccache) && tg_sendText "ccache upload" && (up cr_ccache.tar.gz || up ccache.zip) && tg_sendFile "download.txt" && cd /tmp/rom &
 brunch lavender || make bacon -j$(nproc --all)
 
 
