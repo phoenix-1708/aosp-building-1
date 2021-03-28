@@ -81,12 +81,12 @@ ccache -o compression=true
 ccache -z
 
 #tg_sendText "Building"
-#make SystemUI
-#make api-stubs-docs
-#make system-api-stubs-docs
-#make test-api-stubs-docs
-#make hiddenapi-lists-docs
-#tg_sendText "metalava done.. Building"
+make SystemUI
+make api-stubs-docs
+make system-api-stubs-docs
+make test-api-stubs-docs
+make hiddenapi-lists-docs
+tg_sendText "metalava done.. Building"
 
 make bacon -j$(nproc --all) || make bacon -j16
 
