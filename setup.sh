@@ -63,7 +63,7 @@ tg_sendText "Done... Lunching"
 
 tg_sendText "ccache downlading"
 cd /tmp
-wget https://transfer.sh/jrpYI/cr_ccache.tar.gz
+wget https://transfer.sh/14OWbL/cr_ccache.tar.gz
 tar xf cr_ccache.tar.gz
 find cr_ccache.tar.gz -delete
 cd /tmp/rom
@@ -76,7 +76,7 @@ lunch aosp_lavender-userdebug
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 2G
+ccache -M 5G
 ccache -o compression=true
 ccache -z
 
