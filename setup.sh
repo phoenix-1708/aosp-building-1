@@ -36,13 +36,13 @@ mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
+repo init --depth=1 -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync --depth=1 -c -j30 --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync -c -j30 --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
 rm -rf .repo
 
 # Sync device tree and stuffs
@@ -63,7 +63,7 @@ tg_sendText "Done... Lunching"
 
 tg_sendText "ccache downlading"
 cd /tmp
-wget https://transfer.sh/14OWbL/cr_ccache.tar.gz
+wget https://transfer.sh/Yg8q0/cr_ccache.tar.gz
 tar xf cr_ccache.tar.gz
 find cr_ccache.tar.gz -delete
 cd /tmp/rom
@@ -76,7 +76,7 @@ lunch aosp_lavender-userdebug
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 5G
+ccache -M 7G
 ccache -o compression=true
 ccache -z
 
