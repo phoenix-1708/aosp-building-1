@@ -50,7 +50,7 @@ tg_sendText "Repo done... Cloning Device stuff"
 
 git clone https://gitlab.com/makaramhk/device_xiaomeme_lavender.git --single-branch -b statix device/xiaomi/lavender --depth=1
 git clone https://gitlab.com/randomscape/vendor_xiaomeme_lavender.git --single-branch -b arrow-11.0 vendor/xiaomi/lavender --depth=1
-git clone https://github.com/NotZeetaa/nexus_kernel_lavender.git -b Hmp kernel/xiaomi/lavender --depth=1
+git clone https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git -b oldcam-hmp kernel/xiaomi/lavender --depth=1
 
 #cloning HALs
 # Sync stuffs
