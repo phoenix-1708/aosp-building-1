@@ -24,6 +24,8 @@ up(){
 	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 
+mkdir -p ~/.config/rclone && echo "$rclone_config" > ~/.config/rclone/rclone.conf
+
 #sudo apt-get update -y
 sudo apt-get install -y openjdk-11-jdk
 java -version
@@ -71,13 +73,13 @@ tg_sendText "Done... Lunching"
 
 
 
-$tg_sendText "ccache downlading"
-$cd /tmp
-$wget https://transfer.sh/Yg8q0/cr_ccache.tar.gz
-$tar xf cr_ccache.tar.gz
-$find cr_ccache.tar.gz -delete
-$cd /tmp/rom
-$tg_sendText "ccache done"
+tg_sendText "ccache downlading"
+cd /tmp
+rclone copy hk:statix/cr_ccache.tar.gz ./
+tar xf cr_ccache.tar.gz
+find cr_ccache.tar.gz -delete
+cd /tmp/rom
+tg_sendText "ccache done"
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
@@ -98,12 +100,13 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 
-sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && mkdir -p ~/.config/rclone && echo "$rclone_config" > ~/.config/rclone/rclone.conf && time rclone copy cr_ccache.tar.gz hk:statix/ -P && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:statix1/ -P && cd /tmp/rom &
 brunch statix_lavender-userdebug
 
 
 tg_sendText "Build zip"
 cd /tmp/rom
+rclone copy out/target/product/lavender/*.zip hk:rom/
 up out/target/product/lavender/*.zip
 tg_sendFile "download.txt"
 #tg_sendFile "out/target/product/lavender/*.zip"
