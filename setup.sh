@@ -29,28 +29,38 @@ sudo apt-get install -y openjdk-11-jdk
 java -version
 sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
 sudo apt-get install wget
-MANIFEST=git://github.com/TenX-OS/manifest_TenX
-BRANCH=eleven
+MANIFEST=git://github.com/StatiXOS/android_manifest.git
+BRANCH=11
 
 mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init --depth=1 -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
+repo init --no-repo-verify --depth=1 -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync -c -j30 --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync --force-sync --no-clone-bundle --current-branch --no-tags -j30 || repo sync --force-sync --no-clone-bundle --current-branch --no-tags -j8
 rm -rf .repo
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
 
-git clone https://gitlab.com/makaramhk/device_xiaomeme_lavender.git --single-branch -b tenx device/xiaomi/lavender --depth=1
+git clone https://gitlab.com/makaramhk/device_xiaomeme_lavender.git --single-branch -b statix device/xiaomi/lavender --depth=1
 git clone https://gitlab.com/randomscape/vendor_xiaomeme_lavender.git --single-branch -b arrow-11.0 vendor/xiaomi/lavender --depth=1
 git clone https://github.com/NotZeetaa/nexus_kernel_lavender.git -b Hmp kernel/xiaomi/lavender --depth=1
+
+#cloning HALs
+# Sync stuffs
+find hardware/qcom-caf/msm8998/display hardware/qcom-caf/msm8998/audio hardware/qcom-caf/msm8998/media hardware/qcom/sm8150 hardware/qcom/sdm845 .repo/ -delete
+git clone https://github.com/ArrowOS/android_hardware_qcom_media --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/media --depth=1
+git clone https://github.com/ArrowOS/android_hardware_qcom_audio --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/audio --depth=1
+git clone -b 11 https://github.com/zaidkhan0997/hardware_qcom-caf_display_msm8998.git hardware/qcom-caf/msm8998/display --depth=1
+git clone https://github.com/ArrowOS/android_hardware_qcom_vr --single-branch -b arrow-11.0 hardware/qcom-caf/vr --depth=1
+git clone -b lineage-18.1 https://github.com/LineageOS/android_external_ant-wireless_antradio-library external/ant-wireless/antradio-library
+git clone -b arrow-11.0 https://github.com/ArrowOS/android_packages_resources_devicesettings packages/resources/devicesettings
 
 tg_sendText "Done... Lunching"
 
@@ -61,22 +71,22 @@ tg_sendText "Done... Lunching"
 
 
 
-tg_sendText "ccache downlading"
-cd /tmp
-wget https://transfer.sh/Yg8q0/cr_ccache.tar.gz
-tar xf cr_ccache.tar.gz
-find cr_ccache.tar.gz -delete
-cd /tmp/rom
-tg_sendText "ccache done"
+$tg_sendText "ccache downlading"
+$cd /tmp
+$wget https://transfer.sh/Yg8q0/cr_ccache.tar.gz
+$tar xf cr_ccache.tar.gz
+$find cr_ccache.tar.gz -delete
+$cd /tmp/rom
+$tg_sendText "ccache done"
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
 . build/envsetup.sh
-lunch aosp_lavender-userdebug
+lunch statix_lavender-userdebug
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 7G
+ccache -M 5G
 ccache -o compression=true
 ccache -z
 
@@ -88,8 +98,8 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 
-sleep 70m && cd /tmp && tg_sendText "ccache compress" && (time com ccache 1 || zip -r ccache.zip ccache) && tg_sendText "ccache upload" && (up cr_ccache.tar.gz || up ccache.zip) && tg_sendFile "download.txt" && cd /tmp/rom &
-brunch lavender || make bacon -j$(nproc --all)
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && mkdir -p ~/.config/rclone && echo "$rclone_config" > ~/.config/rclone/rclone.conf && time rclone copy cr_ccache.tar.gz hk:statix/ -P && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
+brunch statix_lavender-userdebug
 
 
 tg_sendText "Build zip"
@@ -101,9 +111,13 @@ tg_sendText "json"
 up out/target/product/lavender/*.json
 tg_sendFile "download.txt"
 
-tg_sendText "ccache upload"
-cd /tmp
-time com ccache 3 # Compression level 1, its enough
-up cr_ccache.tar.gz
-tg_sendFile "download.txt"
-cd /tmp/rom
+#tg_sendText "ccache upload"
+#cd /tmp
+#time com ccache 3 # Compression level 1, its enough
+#up cr_ccache.tar.gz
+#tg_sendFile "download.txt"
+#cd /tmp/rom
+
+#mkdir -p ~/.config/rclone
+#echo "$rclone_config" > ~/.config/rclone/rclone.conf
+#time rclone copy cr_ccache.tar.gz hk:statix/ -P
