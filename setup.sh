@@ -84,13 +84,13 @@ tg_sendText "ccache done"
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
 . build/envsetup.sh
-lunch statix_lavender-userdebug
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
 ccache -M 5G
 ccache -o compression=true
 ccache -z
+lunch statix_lavender-userdebug
 
 tg_sendText "Building"
 #make SystemUI
