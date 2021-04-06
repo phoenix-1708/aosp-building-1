@@ -75,7 +75,7 @@ tg_sendText "Done... Lunching"
 
 tg_sendText "ccache downlading"
 cd /tmp
-rclone copy hk:statix/cr_ccache.tar.gz ./
+time rclone copy hk:statix/cr_ccache.tar.gz ./
 tar xf cr_ccache.tar.gz
 find cr_ccache.tar.gz -delete
 cd /tmp/rom
@@ -87,7 +87,7 @@ export SELINUX_IGNORE_NEVERALLOWS=true
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 5G
+ccache -M 7G
 ccache -o compression=true
 ccache -z
 lunch statix_lavender-userdebug
