@@ -1,5 +1,4 @@
 #!/bin/bash
-##
 
 function tg_sendText() {
 curl -s "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
