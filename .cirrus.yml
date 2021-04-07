@@ -10,7 +10,7 @@ task:
     container:
       image: apon77/aosp:latest
       cpu: 8
-      memory: 64G
+      memory: 32G
     build_script:
       - ./setup.sh
   #  upload_ccache_script:
