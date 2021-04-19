@@ -30,20 +30,21 @@ sudo apt-get install -y openjdk-11-jdk
 java -version
 sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
 sudo apt-get install wget
-MANIFEST=https://github.com/Palladium-OS/platform_manifest.git
-BRANCH=11
+MANIFEST=git://github.com/AospExtended/manifest.git
+BRANCH=11.x
 
 mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
+repo init -u git://github.com/AospExtended/manifest.git -b 11.x -g default,-device,-mips,-darwin,-notdefault
+repo init --depth=1 -u git://github.com/AospExtended/manifest.git -b 11.x
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j30 || repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j8
+repo sync -c -j30 --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
 rm -rf .repo
 
 # Sync device tree and stuffs
@@ -86,14 +87,14 @@ tg_sendText "Done... Lunching"
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
-. build/envsetup.sh
+source build/envsetup.sh
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
 ccache -M 10G
 ccache -o compression=true
 ccache -z
-lunch palladium_lavender-userdebug
+lunch aosp_lavender-userdebug
 
 tg_sendText "Building"
 #make SystemUI
@@ -103,8 +104,8 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 
-sleep 80m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:statix/ -P && cd /tmp/rom &
-mka palladium -j$(nproc --all) || mka palladium -j16
+sleep 60m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:statix/ -P && cd /tmp/rom &
+m aex -j$(nproc --all) || m aex -j12
 
 
 tg_sendText "Build zip"
