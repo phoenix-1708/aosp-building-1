@@ -64,8 +64,10 @@ git clone --depth=1 -b oldcam-eas https://github.com/stormbreaker-project/kernel
 #git clone https://github.com/ArrowOS/android_hardware_qcom_audio --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/audio --depth=1
 #git clone -b 11 https://github.com/zaidkhan0997/hardware_qcom-caf_display_msm8998.git hardware/qcom-caf/msm8998/display --depth=1
 #git clone https://github.com/ArrowOS/android_hardware_qcom_vr --single-branch -b arrow-11.0 hardware/qcom-caf/vr --depth=1
-#git clone -b lineage-18.1 https://github.com/LineageOS/android_external_ant-wireless_antradio-library external/ant-wireless/antradio-library
-#git clone -b arrow-11.0 https://github.com/ArrowOS/android_packages_resources_devicesettings packages/resources/devicesettings
+rm -rf external/ant-wireless/antradio-library
+git clone -b lineage-18.1 https://github.com/LineageOS/android_external_ant-wireless_antradio-library external/ant-wireless/antradio-library
+rm -rf packages/resources/devicesettings
+git clone -b lineage-18.1 https://github.com/LineageOS/android_packages_resources_devicesettings packages/resources/devicesettings
 
 tg_sendText "Done... Lunching"
 
