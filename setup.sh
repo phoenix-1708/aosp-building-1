@@ -50,13 +50,9 @@ rm -rf .repo
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
 
-git clone https://github.com/makhk/device_xiaomi_lavender -b palladium device/xiaomi/lavender
-git clone -b eleven https://github.com/RevengeOS-Devices/device_xiaomi_sdm660-common device/xiaomi/sdm660-common
-git clone -b eleven https://github.com/RevengeOS-Devices/vendor_xiaomi_lavender vendor/xiaomi/lavender
-git clone -b eleven https://github.com/RevengeOS-Devices/vendor_xiaomi_sdm660-common vendor/xiaomi/sdm660-common
-git clone -b oldcam-eas https://github.com/stormbreaker-project/kernel_xiaomi_lavender kernel/xiaomi/sdm660
-#git clone https://gitlab.com/randomscape/vendor_xiaomeme_lavender.git --single-branch -b arrow-11.0 vendor/xiaomi/lavender --depth=1
-#git clone https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git -b oldcam-hmp kernel/xiaomi/lavender --depth=1
+git clone -b aex https://github.com/makaramhk/device_xiaomeme_lavender device/xiaomi/lavender
+git clone -b flos-backup https://github.com/makaramhk/vendor_xiaomeme_lavender vendor/xiaomi/lavender
+git clone https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git -b oldcam-hmp kernel/xiaomi/lavender --depth=1
 
 #cloning HALs
 # Sync stuffs
