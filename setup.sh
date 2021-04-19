@@ -30,28 +30,32 @@ sudo apt-get install -y openjdk-11-jdk
 java -version
 sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
 sudo apt-get install wget
-MANIFEST=git://github.com/StatiXOS/android_manifest.git
+MANIFEST=https://github.com/Palladium-OS/platform_manifest.git
 BRANCH=11
 
 mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init --no-repo-verify --depth=1 -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
+repo init -u "$MANIFEST" -b "$BRANCH" -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync --force-sync --no-clone-bundle --current-branch --no-tags -j30 || repo sync --force-sync --no-clone-bundle --current-branch --no-tags -j8
+repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j30 || repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j8
 rm -rf .repo
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
 
-git clone https://gitlab.com/makaramhk/device_xiaomeme_lavender.git --single-branch -b statix device/xiaomi/lavender --depth=1
-git clone https://gitlab.com/randomscape/vendor_xiaomeme_lavender.git --single-branch -b arrow-11.0 vendor/xiaomi/lavender --depth=1
-git clone https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git -b oldcam-hmp kernel/xiaomi/lavender --depth=1
+git clone https://github.com/makhk/device_xiaomi_lavender -b palladium device/xiaomi/lavender
+git clone -b eleven https://github.com/RevengeOS-Devices/device_xiaomi_sdm660-common device/xiaomi/sdm660-common
+git clone -b eleven https://github.com/RevengeOS-Devices/vendor_xiaomi_lavender vendor/xiaomi/lavender
+git clone -b eleven https://github.com/RevengeOS-Devices/vendor_xiaomi_sdm660-common vendor/xiaomi/sdm660-common
+git clone -b oldcam-eas https://github.com/stormbreaker-project/kernel_xiaomi_lavender kernel/xiaomi/sdm660
+#git clone https://gitlab.com/randomscape/vendor_xiaomeme_lavender.git --single-branch -b arrow-11.0 vendor/xiaomi/lavender --depth=1
+#git clone https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git -b oldcam-hmp kernel/xiaomi/lavender --depth=1
 
 #cloning HALs
 # Sync stuffs
@@ -72,13 +76,13 @@ tg_sendText "Done... Lunching"
 
 
 
-tg_sendText "ccache downlading"
-cd /tmp
-time rclone copy hk:statix/cr_ccache.tar.gz ./
-tar xf cr_ccache.tar.gz
-find cr_ccache.tar.gz -delete
-cd /tmp/rom
-tg_sendText "ccache done"
+#tg_sendText "ccache downlading"
+#cd /tmp
+#time rclone copy hk:statix/cr_ccache.tar.gz ./
+#tar xf cr_ccache.tar.gz
+#find cr_ccache.tar.gz -delete
+#cd /tmp/rom
+#tg_sendText "ccache done"
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
@@ -89,7 +93,7 @@ export USE_CCACHE=1
 ccache -M 10G
 ccache -o compression=true
 ccache -z
-lunch statix_lavender-userdebug
+lunch palladium_lavender-userdebug
 
 tg_sendText "Building"
 #make SystemUI
@@ -100,7 +104,7 @@ tg_sendText "Building"
 #tg_sendText "metalava done.. Building"
 
 sleep 80m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:statix/ -P && cd /tmp/rom &
-brunch statix_lavender-userdebug
+mka palladium -j$(nproc --all) || mka palladium -j16 || mka palladium -j8
 
 
 tg_sendText "Build zip"
