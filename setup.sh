@@ -49,11 +49,15 @@ rm -rf .repo
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
-git clone -b palladium https://github.com/makhk/device_xiaomi_lavender.git device/xiaomi/lavender
-git clone -b eleven https://github.com/raiyanbinmohsin/device_xiaomi_sdm660-common.git device/xiaomi/sdm660-common
-git clone -b eleven https://github.com/raiyanbinmohsin/vendor_xiaomi_lavender vendor/xiaomi/lavender
-git clone -b eleven https://github.com/raiyanbinmohsin/vendor_xiaomi_sdm660-common vendor/xiaomi/sdm660-common
-git clone --depth=1 -b oldcam-eas https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/sdm660
+git clone -b aex https://github.com/makaramhk/device_xiaomeme_lavender.git device/xiaomi/lavender
+git clone -b flos-backup https://github.com/makaramhk/vendor_xiaomeme_lavender.git vendor/xiaomi/lavender
+git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
+
+#git clone -b palladium https://github.com/makhk/device_xiaomi_lavender.git device/xiaomi/lavender
+#git clone -b eleven https://github.com/raiyanbinmohsin/device_xiaomi_sdm660-common.git device/xiaomi/sdm660-common
+#git clone -b eleven https://github.com/raiyanbinmohsin/vendor_xiaomi_lavender vendor/xiaomi/lavender
+#git clone -b eleven https://github.com/raiyanbinmohsin/vendor_xiaomi_sdm660-common vendor/xiaomi/sdm660-common
+#git clone --depth=1 -b oldcam-eas https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/sdm660
 
 
 
