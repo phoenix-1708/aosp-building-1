@@ -82,13 +82,13 @@ tg_sendText "Done... Lunching"
 
 
 
-#tg_sendText "ccache downlading"
-#cd /tmp
-#time rclone copy hk:statix/cr_ccache.tar.gz ./
-#tar xf cr_ccache.tar.gz
-#find cr_ccache.tar.gz -delete
-#cd /tmp/rom
-#tg_sendText "ccache done"
+tg_sendText "ccache downlading"
+cd /tmp
+time rclone copy hk:statix/cr_ccache.tar.gz ./
+tar xf cr_ccache.tar.gz
+find cr_ccache.tar.gz -delete
+cd /tmp/rom
+tg_sendText "ccache done"
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
