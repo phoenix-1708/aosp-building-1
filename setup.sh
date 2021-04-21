@@ -108,7 +108,7 @@ tg_sendText "Building"
 #make test-api-stubs-docs
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
-
+export PATH="$HOME/bin:$PATH"
 sleep 80m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:statix/ -P && cd /tmp/rom &
 m aex -j$(nproc --all) || m aex -j12
 
