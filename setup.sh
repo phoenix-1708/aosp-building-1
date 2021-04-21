@@ -28,7 +28,7 @@ mkdir -p ~/.config/rclone && echo "$rclone_config" > ~/.config/rclone/rclone.con
 #sudo apt-get update -y
 sudo apt-get install -y openjdk-11-jdk
 java -version
-sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
+sudo apt-get install -y bc bison repo build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
 sudo apt-get install wget
 MANIFEST=git://github.com/AospExtended/manifest.git
 BRANCH=11.x
