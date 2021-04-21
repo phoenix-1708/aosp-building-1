@@ -45,7 +45,7 @@ tg_sendText "Downloading sources"
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
 repo sync -c -j30 --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
-rm -rf .repo
+#rm -rf .repo
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
