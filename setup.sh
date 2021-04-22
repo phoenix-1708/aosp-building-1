@@ -96,7 +96,7 @@ source build/envsetup.sh
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 10G
+ccache -M 12G
 ccache -o compression=true
 ccache -z
 lunch aosp_lavender-userdebug
@@ -109,13 +109,14 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
-sleep 80m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:statix/ -P && cd /tmp/rom &
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:statix/ -P && cd /tmp/rom &
 m aex -j$(nproc --all) || m aex -j12
 
 
 tg_sendText "Build zip"
 cd /tmp/rom
-rclone copy out/target/product/lavender/*.zip hk:rom/
+#rclone copy out/target/product/lavender/ hk:rom/ --include "*.zip"
+rclone copy out/target/product/lavender/ hk:rom/ --include "AospExtended-v8.0-lavender-UNOFFICI*"
 up out/target/product/lavender/*.zip
 tg_sendFile "download.txt"
 #tg_sendFile "out/target/product/lavender/*.zip"
