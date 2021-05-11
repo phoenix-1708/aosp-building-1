@@ -84,7 +84,7 @@ rm -rf hardware/qcom-caf/msm8998/audio && git clone https://github.com/ArrowOS/a
 
 tg_sendText "ccache downlading"
 cd /tmp
-time rclone copy hk:statix/cr_ccache.tar.gz ./
+time rclone copy hk:aex/cr_ccache.tar.gz ./
 tar xf cr_ccache.tar.gz
 find cr_ccache.tar.gz -delete
 cd /tmp/rom
@@ -109,7 +109,7 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
-sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:statix/ -P && cd /tmp/rom &
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:aex/ -P && cd /tmp/rom &
 m aex -j$(nproc --all) || m aex -j12
 
 
