@@ -34,7 +34,15 @@ MANIFEST=git://github.com/AospExtended/manifest.git
 BRANCH=11.x
 
 mkdir -p /tmp/rom
+tg_sendText "ccache downlading"
+cd /tmp
+wget https://purple-fire-66d9.hk96.workers.dev/aex/cr_ccache.tar.gz || time rclone copy hk:aex/cr_ccache.tar.gz ./
+tar xf cr_ccache.tar.gz
+find cr_ccache.tar.gz -delete
 cd /tmp/rom
+tg_sendText "ccache done"
+
+#cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
 repo init -u git://github.com/AospExtended/manifest.git -b 11.x -g default,-device,-mips,-darwin,-notdefault
@@ -82,13 +90,13 @@ rm -rf hardware/qcom-caf/msm8998/audio && git clone https://github.com/ArrowOS/a
 
 
 
-tg_sendText "ccache downlading"
-cd /tmp
-time rclone copy hk:aex/cr_ccache.tar.gz ./
-tar xf cr_ccache.tar.gz
-find cr_ccache.tar.gz -delete
-cd /tmp/rom
-tg_sendText "ccache done"
+#tg_sendText "ccache downlading"
+#cd /tmp
+#time rclone copy hk:aex/cr_ccache.tar.gz ./
+#tar xf cr_ccache.tar.gz
+#find cr_ccache.tar.gz -delete
+#cd /tmp/rom
+#tg_sendText "ccache done"
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
