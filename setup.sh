@@ -30,13 +30,15 @@ sudo apt-get install -y openjdk-11-jdk
 java -version
 sudo apt-get install -y bc bison repo build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
 sudo apt-get install wget
-MANIFEST=git://github.com/AospExtended/manifest.git
-BRANCH=11.x
+#MANIFEST=git://github.com/AospExtended/manifest.git
+#BRANCH=11.x
 
 mkdir -p /tmp/rom
+
+
 tg_sendText "ccache downlading"
 cd /tmp
-wget https://purple-fire-66d9.hk96.workers.dev/aex/cr_ccache.tar.gz || time rclone copy hk:aex/cr_ccache.tar.gz ./
+wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz || time rclone copy hk:tenx/cr_ccache.tar.gz ./
 tar xf cr_ccache.tar.gz
 find cr_ccache.tar.gz -delete
 cd /tmp/rom
@@ -45,35 +47,26 @@ tg_sendText "ccache done"
 #cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -u git://github.com/AospExtended/manifest.git -b 11.x -g default,-device,-mips,-darwin,-notdefault
-repo init --depth=1 -u git://github.com/AospExtended/manifest.git -b 11.x
+repo init -u git://github.com/TenX-OS/manifest_TenX -b eleven -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync -c -j30 --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
 #rm -rf .repo
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
-git clone -b aex https://github.com/makaramhk/device_xiaomeme_lavender.git device/xiaomi/lavender
-git clone -b flos-backup https://github.com/makaramhk/vendor_xiaomeme_lavender.git vendor/xiaomi/lavender
-git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
-
-#git clone -b palladium https://github.com/makhk/device_xiaomi_lavender.git device/xiaomi/lavender
-#git clone -b eleven https://github.com/raiyanbinmohsin/device_xiaomi_sdm660-common.git device/xiaomi/sdm660-common
-#git clone -b eleven https://github.com/raiyanbinmohsin/vendor_xiaomi_lavender vendor/xiaomi/lavender
-#git clone -b eleven https://github.com/raiyanbinmohsin/vendor_xiaomi_sdm660-common vendor/xiaomi/sdm660-common
-#git clone --depth=1 -b oldcam-eas https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/sdm660
-
-
+git clone -b tenx https://github.com/makhk/android_device_xiaomi_lavender.git device/xiaomi/lavender && git clone -b tenx https://github.com/makhk/android_device_xiaomi_sdm660-common device/xiaomi/sdm660-common
+git clone -b eleven https://github.com/zaidkhan0997/android_vendor_xiaomi_lavender vendor/xiaomi/lavender && git clone -b eleven https://github.com/zaidkhan0997/android_vendor_xiaomi_sdm660-common vendor/xiaomi/sdm660-common
+git clone -b oldcam-eas --depth=1 https://github.com/stormbreaker-project/kernel_xiaomi_lavender kernel/xiaomi/sdm660
 
 #cloning HALs
 # Sync stuffs
 #find hardware/qcom-caf/msm8998/display hardware/qcom-caf/msm8998/audio hardware/qcom-caf/msm8998/media -delete
 #git clone https://github.com/ArrowOS/android_hardware_qcom_media --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/media --depth=1
-rm -rf hardware/qcom-caf/msm8998/audio && git clone https://github.com/ArrowOS/android_hardware_qcom_audio --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/audio
+#rm -rf hardware/qcom-caf/msm8998/audio && git clone https://github.com/ArrowOS/android_hardware_qcom_audio --single-branch -b arrow-11.0-caf-msm8998 hardware/qcom-caf/msm8998/audio
 #git clone -b 11 https://github.com/zaidkhan0997/hardware_qcom-caf_display_msm8998.git hardware/qcom-caf/msm8998/display --depth=1
 #git clone https://github.com/ArrowOS/android_hardware_qcom_vr --single-branch -b arrow-11.0 hardware/qcom-caf/vr --depth=1
 #rm -rf external/ant-wireless/antradio-library
@@ -100,11 +93,11 @@ rm -rf hardware/qcom-caf/msm8998/audio && git clone https://github.com/ArrowOS/a
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
-source build/envsetup.sh
+. build/envsetup.sh
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 12G
+ccache -M 7G
 ccache -o compression=true
 ccache -z
 lunch aosp_lavender-userdebug
@@ -117,14 +110,14 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
-sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:aex/ -P && cd /tmp/rom &
-m aex -j$(nproc --all) || m aex -j12
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:tenx/ -P && tg_sendText "DONE" && cd /tmp/rom &
+make bacon -j$(nproc --all) || brunch lavender
 
 
 tg_sendText "Build zip"
 cd /tmp/rom
 #rclone copy out/target/product/lavender/ hk:rom/ --include "*.zip"
-rclone copy out/target/product/lavender/ hk:rom/ --include "AospExtended-v8.0-lavender-UNOFFICI*"
+rclone copy out/target/product/lavender/ hk:rom/ --include "TenX-OS-v3.1_lavend*"
 up out/target/product/lavender/*.zip
 tg_sendFile "download.txt"
 #tg_sendFile "out/target/product/lavender/*.zip"
