@@ -38,7 +38,7 @@ mkdir -p /tmp/rom
 
 tg_sendText "ccache downlading"
 cd /tmp
-wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz || time rclone copy hk:tenx/cr_ccache.tar.gz ./
+wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz || time rclone copy hk:tenx/cr_ccache.tar.gz ./
 tar xf cr_ccache.tar.gz
 find cr_ccache.tar.gz -delete
 cd /tmp/rom
