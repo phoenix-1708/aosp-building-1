@@ -1,5 +1,6 @@
 #!/bin/bash
 
+AFHFTP_TOKEN: "ENCRYPTED[7179b79790e2bc4cd776cbe9bc33adccc7a10c2517e6f72f018ec848f4be5a9d392d34669eb0dc40c7e51ec647995553]"
 function tg_sendText() {
 curl -s "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
 -d "parse_mode=html" \
@@ -110,13 +111,14 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
-sleep 65m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:tenx/ -P && tg_sendText "DONE" && cd /tmp/rom &
-make bacon -j$(nproc --all) || brunch lavender
+#sleep 65m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:tenx/ -P && tg_sendText "DONE" && cd /tmp/rom &
+make bacon -j12 || brunch lavender
 
 
 tg_sendText "Build zip"
 cd /tmp/rom
 #rclone copy out/target/product/lavender/ hk:rom/ --include "*.zip"
+curl -ftp-pasv -T out/target/product/lavender/TenX-OS-v3.1_lavend*.zip $AFHFTP_TOKEN
 rclone copy out/target/product/lavender/ hk:rom/ --include "TenX-OS-v3.1_lavend*"
 up out/target/product/lavender/*.zip
 tg_sendFile "download.txt"
