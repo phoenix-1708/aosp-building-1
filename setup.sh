@@ -1,6 +1,5 @@
 #!/bin/bash
 
-AFHFTP_TOKEN: "ENCRYPTED[7179b79790e2bc4cd776cbe9bc33adccc7a10c2517e6f72f018ec848f4be5a9d392d34669eb0dc40c7e51ec647995553]"
 function tg_sendText() {
 curl -s "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
 -d "parse_mode=html" \
@@ -37,18 +36,18 @@ sudo apt-get install wget
 mkdir -p /tmp/rom
 
 
-tg_sendText "ccache downlading"
-cd /tmp
-wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
-tar xf cr_ccache.tar.gz
-find cr_ccache.tar.gz -delete
-cd /tmp/rom
-tg_sendText "ccache done"
-
+#tg_sendText "ccache downlading"
+#cd /tmp
+#wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
+#tar xf cr_ccache.tar.gz
+#find cr_ccache.tar.gz -delete
 #cd /tmp/rom
+#tg_sendText "ccache done"
+
+cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init --no-repo-verify --depth=1 -u git://github.com/TenX-OS/manifest_TenX -b eleven -g default,-device,-mips,-darwin,-notdefault
+repo init --depth=1 -u https://github.com/PixelPlusUI/manifest -b eleven -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
@@ -59,9 +58,9 @@ repo sync -c -j$(nproc --all) --force-sync --optimized-fetch --prune --no-clone-
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
-git clone -b tenx https://github.com/makhk/android_device_xiaomi_lavender.git device/xiaomi/lavender && git clone -b tenx https://github.com/makhk/android_device_xiaomi_sdm660-common device/xiaomi/sdm660-common
-git clone -b eleven https://github.com/zaidkhan0997/android_vendor_xiaomi_lavender vendor/xiaomi/lavender && git clone -b eleven https://github.com/zaidkhan0997/android_vendor_xiaomi_sdm660-common vendor/xiaomi/sdm660-common
-git clone -b oldcam-eas --depth=1 https://github.com/stormbreaker-project/kernel_xiaomi_lavender kernel/xiaomi/sdm660
+git clone -b eleven https://github.com/makhk/device_xiaomeme_lavender device/xiaomi/lavender
+git clone -b eleven https://github.com/makhk/vendor_xiaomeme_lavender vendor/xiaomi/lavender
+git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
 
 #cloning HALs
 # Sync stuffs
@@ -111,15 +110,13 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
-#sleep 65m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:tenx/ -P && tg_sendText "DONE" && cd /tmp/rom &
-make bacon -j12 || brunch lavender
+sleep 80m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:tenx/ -P && tg_sendText "DONE" && cd /tmp/rom &
+mka bacon -j12 || mka bacon -j8
 
 
 tg_sendText "Build zip"
 cd /tmp/rom
-#rclone copy out/target/product/lavender/ hk:rom/ --include "*.zip"
-curl -ftp-pasv -T out/target/product/lavender/TenX-OS-v3.1_lavend*.zip $AFHFTP_TOKEN
-rclone copy out/target/product/lavender/ hk:rom/ --include "TenX-OS-v3.1_lavend*"
+rclone copy out/target/product/lavender/ hk:rom/ --include "PixelPlusUI_3.5_lavender*.zip"
 up out/target/product/lavender/*.zip
 tg_sendFile "download.txt"
 #tg_sendFile "out/target/product/lavender/*.zip"
