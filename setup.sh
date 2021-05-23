@@ -53,7 +53,7 @@ tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync -c -j$(nproc --all) --force-sync --optimized-fetch --prune --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync -c -j$(nproc --all) --force-sync --prune --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
 #rm -rf .repo
 
 # Sync device tree and stuffs
@@ -93,7 +93,7 @@ git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
-. build/envsetup.sh
+source build/envsetup.sh || . build/envsetup.sh
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
