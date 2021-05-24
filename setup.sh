@@ -92,7 +92,7 @@ git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
-source build/envsetup.sh || . build/envsetup.sh
+. build/envsetup.sh
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
@@ -109,7 +109,8 @@ tg_sendText "Building"
 #make hiddenapi-lists-docs
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
-sleep 80m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:ppui/ -P && tg_sendText "DONE" && cd /tmp/rom &
+
+sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
 mka bacon -j$(nproc --all) || mka bacon -j12
 
 
@@ -127,7 +128,7 @@ tg_sendFile "download.txt"
 #cd /tmp
 #time com ccache 3 # Compression level 1, its enough
 #up cr_ccache.tar.gz
-#tg_sendFile "download.txt"
+#tg_sendFile "download.txt"tg_sendFile "download.txt"
 #cd /tmp/rom
 
 #mkdir -p ~/.config/rclone
