@@ -35,13 +35,13 @@ sudo apt-get install wget
 mkdir -p /tmp/rom
 
 
-#tg_sendText "ccache downlading"
-#cd /tmp
-#wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/tenx/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
-#tar xf cr_ccache.tar.gz
-#find cr_ccache.tar.gz -delete
-#cd /tmp/rom
-#tg_sendText "ccache done"
+tg_sendText "ccache downlading"
+cd /tmp
+wget https://purple-fire-66d9.hk96.workers.dev/ppui/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/ppui/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
+tar xf cr_ccache.tar.gz
+find cr_ccache.tar.gz -delete
+cd /tmp/rom
+tg_sendText "ccache done"
 
 cd /tmp/rom
 
@@ -52,7 +52,7 @@ tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync -c -j$(nproc --all) --force-sync --optimized-fetch --prune --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
 #rm -rf .repo
 
 # Sync device tree and stuffs
