@@ -57,7 +57,7 @@ repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --pru
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
-git clone -b flos18 https://github.com/makhk/device_xiaomeme_lavender device/xiaomi/lavender
+git clone -b test https://github.com/makhk/device_xiaomeme_lavender device/xiaomi/lavender
 git clone -b eleven https://github.com/makhk/vendor_xiaomeme_lavender vendor/xiaomi/lavender
 git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
 
