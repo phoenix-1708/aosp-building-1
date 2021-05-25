@@ -46,13 +46,13 @@ mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -u https://github.com/ZenX-OS/android_manifest.git -b 11.1 --depth=1 -g default,-device,-mips,-darwin,-notdefault
+repo init -u git://github.com/CandyRoms/candy.git -b c11 --depth=1 -g default,-device,-mips,-darwin,-notdefault || repo init -u git://github.com/CandyRoms/candy.git -b c11
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j$(nproc --all) || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync --force-sync -c --no-tags --no-clone-bundle --optimized-fetch --prune -j$(nproc --all) || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
 #rm -rf .repo
 
 # Sync device tree and stuffs
@@ -92,14 +92,14 @@ git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel
 
 # Normal build steps
 export SELINUX_IGNORE_NEVERALLOWS=true
-. build/envsetup.sh
+source build/envsetup.sh
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
 ccache -M 7G
 ccache -o compression=true
 ccache -z
-lunch lineage_lavender-userdebug
+lunch candy_lavender-userdebug
 
 tg_sendText "Building"
 #make SystemUI
@@ -111,7 +111,7 @@ tg_sendText "Building"
 export PATH="$HOME/bin:$PATH"
 
 sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
-brunch lavender
+make candy -j12 || make candy
 
 
 tg_sendText "Build zip"
