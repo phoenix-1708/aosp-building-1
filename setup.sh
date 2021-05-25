@@ -35,29 +35,29 @@ sudo apt-get install wget
 mkdir -p /tmp/rom
 
 
-tg_sendText "ccache downlading"
-cd /tmp
-wget https://purple-fire-66d9.hk96.workers.dev/ppui/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/ppui/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
-tar xf cr_ccache.tar.gz
-find cr_ccache.tar.gz -delete
-cd /tmp/rom
-tg_sendText "ccache done"
+#tg_sendText "ccache downlading"
+#cd /tmp
+#wget https://purple-fire-66d9.hk96.workers.dev/zen/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/ppui/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
+#tar xf cr_ccache.tar.gz
+#find cr_ccache.tar.gz -delete
+#cd /tmp/rom
+#tg_sendText "ccache done"
 
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init --depth=1 -u https://github.com/PixelPlusUI-Elle/manifest -b eleven -g default,-device,-mips,-darwin,-notdefault
+repo init --depth=1 -u    repo init -u https://github.com/ZenX-OS/android_manifest.git -b 11.1 -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j$(nproc --all) || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
 #rm -rf .repo
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
-git clone -b eleven https://github.com/makhk/device_xiaomeme_lavender device/xiaomi/lavender
+git clone -b flos18 https://github.com/makhk/device_xiaomeme_lavender device/xiaomi/lavender
 git clone -b eleven https://github.com/makhk/vendor_xiaomeme_lavender vendor/xiaomi/lavender
 git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
 
@@ -99,7 +99,7 @@ export USE_CCACHE=1
 ccache -M 7G
 ccache -o compression=true
 ccache -z
-lunch aosp_lavender-userdebug
+lunch lineage_lavender-userdebug
 
 tg_sendText "Building"
 #make SystemUI
@@ -111,12 +111,12 @@ tg_sendText "Building"
 export PATH="$HOME/bin:$PATH"
 
 sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
-mka bacon -j$(nproc --all) || mka bacon -j12
+brunch lavender
 
 
 tg_sendText "Build zip"
 cd /tmp/rom
-rclone copy out/target/product/lavender/ hk:rom/ --include "PixelPlusUI_3.5_lavender*.zip"
+#rclone copy out/target/product/lavender/ hk:rom/ --include "PixelPlusUI_3.5_lavender*.zip"
 up out/target/product/lavender/*.zip
 tg_sendFile "download.txt"
 #tg_sendFile "out/target/product/lavender/*.zip"
