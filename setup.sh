@@ -27,12 +27,14 @@ mkdir -p ~/.config/rclone && echo "$rclone_config" > ~/.config/rclone/rclone.con
 
 sudo apt-get update -y
 sudo apt-get upgrade -y
-sudo apt install python2.7 python-pip
 sudo apt-get install -y openjdk-11-jdk
 sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
 sudo apt-get install wget
 #MANIFEST=git://github.com/AospExtended/manifest.git
 #BRANCH=11.x
+
+git config --global user.email "$user_email"
+git config --global user.name "$user_name"
 
 mkdir -p /tmp/rom
 
@@ -48,18 +50,19 @@ mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -u git://github.com/CandyRoms/candy.git -b c11 --depth=1 -g default,-device,-mips,-darwin,-notdefault || repo init -u git://github.com/CandyRoms/candy.git -b c11
+repo init -u git://github.com/ForkLineageOS/android.git -b lineage-18.1 --depth=1 -g default,-device,-mips,-darwin,-notdefault || repo init -u git://github.com/ForkLineageOS/android.git -b lineage-18.1
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync --force-sync -c --no-tags --no-clone-bundle --optimized-fetch --prune -j$(nproc --all) || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j$(nproc --all) || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
 #rm -rf .repo
+
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
-git clone -b test https://github.com/makhk/device_xiaomeme_lavender device/xiaomi/lavender
+git clone -b flos18 https://github.com/makhk/device_xiaomeme_lavender device/xiaomi/lavender
 git clone -b eleven https://github.com/makhk/vendor_xiaomeme_lavender vendor/xiaomi/lavender
 git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
 
@@ -101,7 +104,7 @@ export USE_CCACHE=1
 ccache -M 7G
 ccache -o compression=true
 ccache -z
-lunch candy_lavender-userdebug
+lunch lineage_lavender-userdebug
 
 tg_sendText "Building"
 #make SystemUI
@@ -113,7 +116,7 @@ tg_sendText "Building"
 export PATH="$HOME/bin:$PATH"
 
 sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
-make candy -j12 || make candy
+make bacon -j$(nproc --all) || make bacon -j12
 
 
 tg_sendText "Build zip"
