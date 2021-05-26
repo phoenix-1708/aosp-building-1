@@ -39,18 +39,18 @@ git config --global user.name "$user_name"
 mkdir -p /tmp/rom
 
 
-#tg_sendText "ccache downlading"
-#cd /tmp
-#wget https://purple-fire-66d9.hk96.workers.dev/zen/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/ppui/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
-#tar xf cr_ccache.tar.gz
-#find cr_ccache.tar.gz -delete
-#cd /tmp/rom
-#tg_sendText "ccache done"
+tg_sendText "ccache downlading"
+cd /tmp
+wget https://purple-fire-66d9.hk96.workers.dev/flos/cr_ccache.tar.gz || wget https://purple-fire-66d9.hk96.workers.dev/flos/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
+tar xf cr_ccache.tar.gz
+find cr_ccache.tar.gz -delete
+cd /tmp/rom
+tg_sendText "ccache done"
 
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -u git://github.com/ForkLineageOS/android.git -b lineage-18.1 --depth=1 -g default,-device,-mips,-darwin,-notdefault || repo init -u git://github.com/ForkLineageOS/android.git -b lineage-18.1
+repo init -u git://github.com/ForkLineageOS/android.git -b lineage-18.1 --depth=1 -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
@@ -115,7 +115,7 @@ tg_sendText "Building"
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
 
-sleep 70m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
+sleep 65m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:flos/ -P && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
 make bacon -j$(nproc --all) || make bacon -j12
 
 
