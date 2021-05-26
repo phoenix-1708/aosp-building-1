@@ -25,7 +25,9 @@ up(){
 
 mkdir -p ~/.config/rclone && echo "$rclone_config" > ~/.config/rclone/rclone.conf
 
-#sudo apt-get update -y
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt install python2.7 python-pip
 sudo apt-get install -y openjdk-11-jdk
 sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
 sudo apt-get install wget
