@@ -63,7 +63,7 @@ repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --pru
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
 git clone -b flos18 https://github.com/makhk/device_xiaomeme_lavender device/xiaomi/lavender
-git clone -b eleven https://github.com/makhk/vendor_xiaomeme_lavender vendor/xiaomi/lavender
+git clone -b test https://github.com/makhk/vendor_xiaomeme_lavender vendor/xiaomi/lavender
 git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
 
 #cloning HALs
@@ -115,8 +115,8 @@ tg_sendText "Building"
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
 
-sleep 60m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && (time rclone copy cr_ccache.tar.gz hk:flos/ -P || up cr_ccache.tar.gz) && tg_sendFile "download.txt" && cd /tmp/rom &
-make bacon -j12 || make bacon -j$(nproc --all)
+#sleep 60m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && (time rclone copy cr_ccache.tar.gz hk:flos/ -P || up cr_ccache.tar.gz) && tg_sendFile "download.txt" && cd /tmp/rom &
+make bacon -j16 || make bacon -j$(nproc --all)
 
 
 tg_sendText "Build zip"
