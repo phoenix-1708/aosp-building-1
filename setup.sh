@@ -101,7 +101,7 @@ source build/envsetup.sh
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 7G
+ccache -M 9G
 ccache -o compression=true
 ccache -z
 lunch lineage_lavender-userdebug
