@@ -96,7 +96,7 @@ tg_sendText "Building"
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
 
-sleep 60m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:flos/ -P && tg_sendText "rclonedone" && up cr_ccache.tar.gz) && tg_sendFile "download.txt" && cd /tmp/rom &
+sleep 60m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:flos/ -P && tg_sendText "rclonedone" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
 make bacon -j$(nproc --all) || make bacon -j12
 
 
