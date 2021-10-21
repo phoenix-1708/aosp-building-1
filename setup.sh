@@ -23,7 +23,7 @@ up(){
 	curl --upload-file $1 https://transfer.sh/ | tee download.txt
 }
 
-mkdir -p ~/.config/rclone && echo "$rclone_config" > ~/.config/rclone/rclone.conf
+#mkdir -p ~/.config/rclone && echo "$rclone_config" > ~/.config/rclone/rclone.conf
 
 sudo apt-get update -y
 sudo apt-get upgrade -y
@@ -36,17 +36,22 @@ sudo apt-get install wget
 #git config --global user.email "$user_email"
 #git config --global user.name "$user_name"
 
+#mkdir -p /tmp/rom
+
+
+#tg_sendText "ccache downlading"
+#cd /tmp
+#wget https://gentle-frog-c15f.hk96.workers.dev/flos/cr_ccache.tar.gz || wget https://gentle-frog-c15f.hk96.workers.dev/flos/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
+#tar xf cr_ccache.tar.gz
+#find cr_ccache.tar.gz -delete
+#cd /tmp/rom
+#tg_sendText "ccache done"
+mkdir ~/bin
+PATH=~/bin:$PATH
+curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+chmod a+x ~/bin/repo
+
 mkdir -p /tmp/rom
-
-
-tg_sendText "ccache downlading"
-cd /tmp
-wget https://gentle-frog-c15f.hk96.workers.dev/flos/cr_ccache.tar.gz || wget https://gentle-frog-c15f.hk96.workers.dev/flos/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
-tar xf cr_ccache.tar.gz
-find cr_ccache.tar.gz -delete
-cd /tmp/rom
-tg_sendText "ccache done"
-
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
