@@ -4,7 +4,7 @@ jobs:
    docker:
     - image: apon77/aosp:latest
       auth:
-   resource_class: large
+   resource_class: xlarge
    steps:
       - run:
           command: |
@@ -13,7 +13,7 @@ jobs:
            git config --global user.email "harikumar1708@gmail.com"
            git config --global color.ui true
            git clone https://github.com/akhilnarang/scripts bscripts && cd bscripts && bash setup/android_build_env.sh && cd ..
-           git clone https://github.com/phoenix-1708/aosp-builder-1 && cd aosp-builder-1
+           git clone https://github.com/phoenix-1708/aosp-building-1.git && cd aosp-building-1
            ./setup.sh
            
            
