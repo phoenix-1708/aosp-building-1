@@ -57,6 +57,9 @@ cd /tmp/rom
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
 repo init -q --no-repo-verify -u https://github.com/ShapeShiftOS/android_manifest.git -b android_11 --depth=1 -g default,-device,-mips,-darwin,-notdefault
 
+tg_sendText "Repo done... Cloning Device stuff"
+git clone https://github.com/phoenix-1708/local_manifest-1.git --depth=1 -b ssos12 .repo/local_manifests
+
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
@@ -66,8 +69,8 @@ repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --pru
 
 
 # Sync device tree and stuffs
-tg_sendText "Repo done... Cloning Device stuff"
-git clone https://github.com/phoenix-1708/local_manifest-1.git --depth=1 -b ssos12 .repo/local_manifests
+#tg_sendText "Repo done... Cloning Device stuff"
+#git clone https://github.com/phoenix-1708/local_manifest-1.git --depth=1 -b ssos12 .repo/local_manifests
 #git clone -b flos18 https://github.com/makhk/device_xiaomi_lavender device/xiaomi/lavender
 #git clone -b test https://github.com/makhk/vendor_xiaomi_lavender vendor/xiaomi/lavender
 #git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
