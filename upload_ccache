@@ -1,15 +1,15 @@
 #!/bin/bash
 
 function tg_sendText() {
-curl -s "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+curl -s "https://api.telegram.org/bot1858827137:AAFZVaKOjAhjVyCXfiGgL-SK6dp7_lILZIE/sendMessage" \
 -d "parse_mode=html" \
 -d text="${1}" \
--d chat_id=$CHAT_ID \
+-d chat_id=-509071822 \
 -d "disable_web_page_preview=true"
 }
 
 function tg_sendFile() {
-curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot$BOT_TOKEN/sendDocument
+curl -F chat_id=-509071822 -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot1858827137:AAFZVaKOjAhjVyCXfiGgL-SK6dp7_lILZIE/sendDocument
 }
 
 tg_sendText "ccache upload"
