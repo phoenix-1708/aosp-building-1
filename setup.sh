@@ -1,15 +1,15 @@
 #!/bin/bash
 
 function tg_sendText() {
-curl -s "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+curl -s "https://api.telegram.org/bot1858827137:AAFZVaKOjAhjVyCXfiGgL-SK6dp7_lILZIE/sendMessage" \
 -d "parse_mode=html" \
 -d text="${1}" \
--d chat_id=$CHAT_ID \
+-d chat_id=-509071822 \
 -d "disable_web_page_preview=true"
 }
 
 function tg_sendFile() {
-curl -F chat_id=$CHAT_ID -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot$BOT_TOKEN/sendDocument
+curl -F chat_id=-509071822 -F document=@${1} -F parse_mode=markdown https://api.telegram.org/bot1858827137:AAFZVaKOjAhjVyCXfiGgL-SK6dp7_lILZIE/sendDocument
 }
 
 #compress to tar code
@@ -33,8 +33,8 @@ sudo apt-get install wget
 #MANIFEST=git://github.com/AospExtended/manifest.git
 #BRANCH=11.x
 
-git config --global user.email "$user_email"
-git config --global user.name "$user_name"
+#git config --global user.email "$user_email"
+#git config --global user.name "$user_name"
 
 mkdir -p /tmp/rom
 
@@ -50,21 +50,22 @@ tg_sendText "ccache done"
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -u git://github.com/ForkLineageOS/android.git -b lineage-18.1 --depth=1 -g default,-device,-mips,-darwin,-notdefault
+repo init -q --no-repo-verify -u https://github.com/ShapeShiftOS/android_manifest.git -b android_11 --depth=1 -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Downloading sources"
 
 # Sync source with -q, no need unnecessary messages, you can remove -q if want! try with -j30 first, if fails, it will try again with -j8
 
-repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j$(nproc --all) || repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+repo sync -c -q --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j$(nproc --all) || repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
 #rm -rf .repo
 
 
 # Sync device tree and stuffs
 tg_sendText "Repo done... Cloning Device stuff"
-git clone -b flos18 https://github.com/makhk/device_xiaomi_lavender device/xiaomi/lavender
-git clone -b test https://github.com/makhk/vendor_xiaomi_lavender vendor/xiaomi/lavender
-git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
+git clone https://github.com/phoenix-1708/local_manifest-1.git --depth=1 -b ssos12 .repo/local_manifests
+#git clone -b flos18 https://github.com/makhk/device_xiaomi_lavender device/xiaomi/lavender
+#git clone -b test https://github.com/makhk/vendor_xiaomi_lavender vendor/xiaomi/lavender
+#git clone --depth=1 -b oldcam-hmp https://github.com/stormbreaker-project/kernel_xiaomi_lavender.git kernel/xiaomi/lavender
 
 
 
@@ -85,7 +86,7 @@ export USE_CCACHE=1
 ccache -M 12G
 ccache -o compression=true
 ccache -z
-lunch lineage_lavender-userdebug
+lunch ssos_tissot-userdebug
 
 tg_sendText "Building"
 #make SystemUI
@@ -96,18 +97,18 @@ tg_sendText "Building"
 #tg_sendText "metalava done.. Building"
 export PATH="$HOME/bin:$PATH"
 
-sleep 60m && cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:flos/ -P && tg_sendText "rclonedone" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
-make bacon -j$(nproc --all) || make bacon -j12
+cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:flos/ -P && tg_sendText "rclonedone" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
+make bacon -j$(nproc --all) || make bacon -j2
 
 
 tg_sendText "Build zip"
 cd /tmp/rom
 #rclone copy out/target/product/lavender/ hk:rom/ --include "PixelPlusUI_3.5_lavender*.zip"
-up out/target/product/lavender/*.zip
+up out/target/product/tissot/*.zip
 tg_sendFile "download.txt"
 #tg_sendFile "out/target/product/lavender/*.zip"
 tg_sendText "json"
-up out/target/product/lavender/*.json
+up out/target/product/tissot/*.json
 tg_sendFile "download.txt"
 
 #tg_sendText "ccache upload"
