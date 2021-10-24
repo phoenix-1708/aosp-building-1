@@ -55,10 +55,15 @@ mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
-repo init -q --no-repo-verify -u https://github.com/ShapeShiftOS/android_manifest.git -b android_11 --depth=1 -g default,-device,-mips,-darwin,-notdefault
+repo init -q --no-repo-verify -u https://github.com/ArrowOS/android_manifest.git -b arrow-11.0 --depth=1 -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Repo done... Cloning Device stuff"
-git clone https://github.com/phoenix-1708/local_manifest-1.git --depth=1 -b ssos12 .repo/local_manifests
+git clone --depth=1 -b arrow-11.0 https://github.com/ArrowOS-Devices/android_device_xiaomi_sweet device/xiaomi/sweet
+git clone --depth=1 -b arrow-11.0 https://github.com/ArrowOS-Devices/android_vendor_xiaomi_sweet vendor/xiaomi/sweet
+git clone --depth=1 -b 11 https://github.com/makhk/kernel_xiaomi_sweet kernel/xiaomi/sweet
+
+# TOOLCHAIN
+git clone --depth=1 https://github.com/kdrag0n/proton-clang --single-branch -b master prebuilts/clang/host/linux-x86/clang-proton
 
 tg_sendText "Downloading sources"
 
@@ -91,10 +96,10 @@ source build/envsetup.sh
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
-ccache -M 12G
+ccache -M 20G
 ccache -o compression=true
 ccache -z
-lunch ssos_tissot-userdebug
+lunch arrow_sweet-userdebug
 
 tg_sendText "Building"
 #make SystemUI
@@ -106,17 +111,17 @@ tg_sendText "Building"
 export PATH="$HOME/bin:$PATH"
 
 #cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:flos/ -P && tg_sendText "rclonedone" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
-make bacon -j$(nproc --all) || make bacon -j2
+m bacon -j2 || m bacon -j4
 
 
 tg_sendText "Build zip"
 cd /tmp/rom
 #rclone copy out/target/product/lavender/ hk:rom/ --include "PixelPlusUI_3.5_lavender*.zip"
-up out/target/product/tissot/*.zip
+up out/target/product/sweet/*.zip
 tg_sendFile "download.txt"
 #tg_sendFile "out/target/product/lavender/*.zip"
 tg_sendText "json"
-up out/target/product/tissot/*.json
+up out/target/product/sweet/*.json
 tg_sendFile "download.txt"
 
 #tg_sendText "ccache upload"
