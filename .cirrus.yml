@@ -1,9 +1,8 @@
 env: # Environt variable to pass to all tasks
     CIRRUS_CLONE_DEPTH: 1 # No need to clone with whole history
-    CIRRUS_WORKING_DIR: "/tmp/ci" # Where to clone repo
     rclone_config: "ENCRYPTED[ef6e122efe78b5b2dd4d135fa43c122fd0cf327032078afa66ade2555146aa974808ab0e61a4d1d799f5de74572df9e2]"
 task:
-    name: ROMBuild
+    name: arrow
     timeout_in: 120m
     container:
       image: inok2341/anu:latest
