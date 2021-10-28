@@ -29,38 +29,40 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get install -y openjdk-11-jdk
 sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
-sudo apt-get install wget
+sudo apt-get install -y wget
 #MANIFEST=git://github.com/AospExtended/manifest.git
 #BRANCH=11.x
 
 #git config --global user.email "$user_email"
 #git config --global user.name "$user_name"
 
-#mkdir -p /tmp/rom
+mkdir -p /tmp/rom
 
+mkdir -p ~/.config/rclone
+echo "$rclone_config" > ~/.config/rclone/rclone.conf
+df -h && free -h && nproc && cat /etc/os* && env
 
-#tg_sendText "ccache downlading"
-#cd /tmp
-#wget https://gentle-frog-c15f.hk96.workers.dev/flos/cr_ccache.tar.gz || wget https://gentle-frog-c15f.hk96.workers.dev/flos/cr_ccache.tar.gz --retry-on-http-error=404 --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 50 || time rclone copy hk:tenx/cr_ccache.tar.gz ./
-#tar xf cr_ccache.tar.gz
-#find cr_ccache.tar.gz -delete
-#cd /tmp/rom
-#tg_sendText "ccache done"
+tg_sendText "ccache downlading"
+cd /tmp
+wget https://withered-lab-e844.harikumar1708.workers.dev/ci2/ccache.tar.gz || time rclone copy remote:sweet/cr_ccache.tar.gz ./
+tar xf ccache.tar.gz
+find ccache.tar.gz -delete
+cd /tmp/rom
+tg_sendText "ccache done"
+
 mkdir ~/bin
 PATH=~/bin:$PATH
 curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
 chmod a+x ~/bin/repo
 
-mkdir -p /tmp/rom
+#mkdir -p /tmp/rom
 cd /tmp/rom
 
 # Repo init command, that -device,-mips,-darwin,-notdefault part will save you more time and storage to sync, add more according to your rom and choice. Optimization is welcomed! Let's make it quit, and with depth=1 so that no unnecessary things.
 repo init -q --no-repo-verify -u https://github.com/ArrowOS/android_manifest.git -b arrow-11.0 --depth=1 -g default,-device,-mips,-darwin,-notdefault
 
 tg_sendText "Repo done... Cloning Device stuff"
-git clone --depth=1 -b arrow-11.0 https://github.com/ArrowOS-Devices/android_device_xiaomi_sweet device/xiaomi/sweet
-git clone --depth=1 -b arrow-11.0 https://github.com/ArrowOS-Devices/android_vendor_xiaomi_sweet vendor/xiaomi/sweet
-git clone --depth=1 -b 11 https://github.com/makhk/kernel_xiaomi_sweet kernel/xiaomi/sweet
+git clone --depth=1 https://github.com/phoenix-1708/local_manifest.git -b arrow-11 .repo/local_manifests
 
 # TOOLCHAIN
 git clone --depth=1 https://github.com/kdrag0n/proton-clang --single-branch -b master prebuilts/clang/host/linux-x86/clang-proton
@@ -111,7 +113,7 @@ tg_sendText "Building"
 export PATH="$HOME/bin:$PATH"
 
 #cd /tmp && tg_sendText "ccache compress" && time com ccache 1 && tg_sendText "ccache upload" && time rclone copy cr_ccache.tar.gz hk:flos/ -P && tg_sendText "rclonedone" && up cr_ccache.tar.gz && tg_sendFile "download.txt" && cd /tmp/rom &
-m bacon -j2 || m bacon -j4
+m bacon -j8 || m bacon -j4
 
 
 tg_sendText "Build zip"
@@ -124,13 +126,14 @@ tg_sendText "json"
 up out/target/product/sweet/*.json
 tg_sendFile "download.txt"
 
-#tg_sendText "ccache upload"
-#cd /tmp
-#time com ccache 3 # Compression level 1, its enough
-#up cr_ccache.tar.gz
-#tg_sendFile "download.txt"tg_sendFile "download.txt"
+tg_sendText "ccache upload"
+cd /tmp
+time com ccache 3 # Compression level 1, its enough
+up ccache.tar.gz
+tg_sendFile "download.txt"tg_sendFile "download.txt"
+
 #cd /tmp/rom
 
 #mkdir -p ~/.config/rclone
 #echo "$rclone_config" > ~/.config/rclone/rclone.conf
-#time rclone copy cr_ccache.tar.gz hk:statix/ -P
+#time rclone copy ccache.tar.gz remote:sweet/ -P
